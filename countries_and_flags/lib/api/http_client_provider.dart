@@ -4,12 +4,10 @@ import '../logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:talker_dio_logger/talker_dio_logger.dart';
 
-part 'http_client_provider.g.dart';
-
-@riverpod
-Dio httpClient(Ref ref) {
+final httpClientProvider = Provider<Dio>((ref) {
   final options = BaseOptions(baseUrl: 'https://restcountries.com/v3.1/');
   final client = Dio(options);
+
   ref.onDispose(client.close);
 
   final logger = TalkerDioLogger(
@@ -18,4 +16,4 @@ Dio httpClient(Ref ref) {
   client.interceptors.add(logger);
 
   return client;
-}
+});
